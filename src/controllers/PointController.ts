@@ -6,7 +6,15 @@ export default class PointController extends Controller {
     super(name);
   }
 
-  public addPoints(req: express.Request, res: express.Response) {}
+  public addPoints(req: express.Request, res: express.Response) {
+    return res.status(200).json({
+      message: 'SUCCESS'
+    });
+  }
 
-  public getSession(req: express.Request, res: express.Response) {}
+  public getSession(req: express.Request, res: express.Response) {
+    return res.status(200).json({
+      message: 'SUCCESS'
+    });
+  }
 }

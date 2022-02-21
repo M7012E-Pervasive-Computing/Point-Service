@@ -1,7 +1,7 @@
 import config from './config/config';
 import logging from './config/logging';
 import mongoose from 'mongoose';
-import express from 'express';
+import express, { NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import http from 'http';
 
@@ -23,15 +23,36 @@ class Sever {
     this.app = express();
     this.router = express.Router();
     this.setupBodyParser();
+    this.setupRouteLogging();
     this.setApiRules();
     this.setupRoutes();
-    this.setupMongooseConnection();
+    // this.setupMongooseConnection();
     this.setupServer();
   }
 
   private setupBodyParser(): void {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
+  }
+
+  private setupRouteLogging(): void {
+    this.app.use(
+      (req: express.Request, res: express.Response, next: NextFunction) => {
+        logging.info(
+          this.name,
+          `METHOD - [${req.method}], URL - [${req.url}], IP - [${req.socket.remoteAddress}]`
+        );
+
+        res.on('finish', () => {
+          logging.info(
+            this.name,
+            `METHOD - [${req.method}], URL - [${req.url}], IP - [${req.socket.remoteAddress}], STATUS - [${res.statusCode}]`
+          );
+        });
+
+        next();
+      }
+    );
   }
 
   private setApiRules(): void {
@@ -61,9 +82,9 @@ class Sever {
 
   private setupRoutes(): void {
     // Setup the routes
-    new PointRoutes(this.router, new PointController('POINT_CONTROLLER'));
-    new SessionRoutes(this.router, new SessionController('SESSION_CONTROLLER'));
-    this.app.use(this.router);
+    new PointRoutes(this.router, new PointController('POINT'));
+    new SessionRoutes(this.router, new SessionController('SESSION'));
+    this.app.use('/', this.router);
 
     // Route Not Found
     this.app.use(
@@ -92,7 +113,7 @@ class Sever {
         );
       })
       .catch((error) => {
-        logging.error(this.name, error.message, error);
+        logging.error(this.name, error.message);
       });
   }
 

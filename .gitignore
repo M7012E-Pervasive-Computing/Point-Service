@@ -1,0 +1,5 @@
+# Javascript build
+dist
+
+# Node files
+node_modules

@@ -1,7 +1,7 @@
 import Controller from "../controllers/controller";
 import Routes from './Routes';
 import express from "express";
-import PointController from "../controllers/PointController";
+import SessionController from "../controllers/SessionController";
 
 export class PointRoutes extends Routes {
 
@@ -10,7 +10,6 @@ export class PointRoutes extends Routes {
     }
 
     public configureRoutes(): void {
-        this.router.post('/add/points', (req, res, next) => (this.controller as PointController).addPoints(req, res));
-        this.router.get('/get/session/:name', (req, res, next) => (this.controller as PointController).getSession(req, res));
+        this.router.get('/get/sessions', (req, res, next) => (this.controller as SessionController).getSessions(req, res))
     }
 } 

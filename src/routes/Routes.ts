@@ -3,15 +3,15 @@ import logging from '../config/logging';
 import Controller from '../controllers/controller';
 
 export default abstract class Routes {
-    protected router: express.Router;
-    protected controller: Controller;
+  protected router: express.Router;
+  protected controller: Controller;
 
-    constructor(router: express.Router, controller: Controller) {
-        this.router = router;
-        this.controller = controller;  
-        this.configureRoutes();
-        logging.info(controller.getName(), 'Creating route');
-    }
+  constructor(router: express.Router, controller: Controller) {
+    this.router = router;
+    this.controller = controller;
+    this.configureRoutes();
+    logging.info(controller.getName(), 'Creating route');
+  }
 
-    public abstract configureRoutes(): void; 
+  public abstract configureRoutes(): void;
 }

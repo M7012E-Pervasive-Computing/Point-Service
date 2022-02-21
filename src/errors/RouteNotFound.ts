@@ -1,5 +1,5 @@
 export default class RouteNotFound extends Error {
-    constructor() {
-        super('Route not found')
-    }
+  constructor() {
+    super('Route not found');
+  }
 }

@@ -3,8 +3,8 @@ import logging from '../config/logging';
 import Controller from '../controllers/controller';
 
 export default abstract class Routes {
-    router: express.Router;
-    controller: Controller;
+    protected router: express.Router;
+    protected controller: Controller;
 
     constructor(router: express.Router, controller: Controller) {
         this.router = router;

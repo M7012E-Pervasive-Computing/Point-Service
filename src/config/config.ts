@@ -2,19 +2,23 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const SERVER_HOSTNAME = process.env.SERVER_HOSTNAME || 'localhost';
-const SERVER_PORT = process.env.SERVER_PORT || 1337;
-
-const DEBUG = Boolean(process.env.DEBUG) || true;
-
+// Server constants
 const server = {
-    hostname: SERVER_HOSTNAME,
-    port: SERVER_PORT
+    hostname: process.env.SERVER_HOSTNAME || 'localhost',
+    port: process.env.SERVER_PORT || 1337
 };
 
+// Databases constants 
+const database = {
+    hostname: process.env.DATABASE_HOSTNAME || 'localhost', 
+    port: process.env.DATABASE_PORT || 27018
+}
+
+// Config for constants
 const config = {
     server: server, 
-    debug: DEBUG
+    database: database,
+    debug: Boolean(process.env.DEBUG) || true
 };
 
 export default config;

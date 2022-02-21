@@ -3,7 +3,7 @@ import Routes from './Routes';
 import express from "express";
 import PointController from "../controllers/PointController";
 
-export class PointRoutes extends Routes {
+export default class PointRoutes extends Routes {
 
     constructor(router: express.Router, controller: Controller) {
         super(router, controller);

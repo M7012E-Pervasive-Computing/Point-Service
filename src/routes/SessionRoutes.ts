@@ -3,7 +3,7 @@ import Routes from './Routes';
 import express from "express";
 import SessionController from "../controllers/SessionController";
 
-export class PointRoutes extends Routes {
+export default class PointRoutes extends Routes {
 
     constructor(router: express.Router, controller: Controller) {
         super(router, controller);

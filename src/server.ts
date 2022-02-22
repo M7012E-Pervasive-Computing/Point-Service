@@ -1,16 +1,19 @@
 import config from './config/config';
 import logging from './config/logging';
-import express, { NextFunction } from 'express';
+import express from 'express';
 import bodyParser from 'body-parser';
 import http from 'http';
 
 import PointRoutes from './routes/PointRoutes';
-import PointController from './controllers/PointController';
 import SessionRoutes from './routes/SessionRoutes';
-import SessionController from './controllers/SessionController';
 
 import RouteNotFoundError from './errors/RouteNotFoundError';
+
+import PointController from './controllers/PointController';
+import SessionController from './controllers/SessionController';
 import DatabaseController from './controllers/DatabaseController';
+
+import Route from './middlewares/Route';
 
 class Server {
   private static instance: Server;
@@ -69,7 +72,8 @@ class Server {
   }
 
   private setupRoutes(): void {
-    this.setupRouteLogging();
+    // this.setupRouteLogging();
+    this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => Route.getInstance().logging(req, res, next));
 
     // Setup the routes
     new PointRoutes(this.router, PointController.getInstance());
@@ -87,26 +91,6 @@ class Server {
         return res.status(404).json({
           message: error.message
         });
-      }
-    );
-  }
-
-  private setupRouteLogging(): void {
-    this.app.use(
-      (req: express.Request, res: express.Response, next: NextFunction) => {
-        logging.info(
-          this.name,
-          `METHOD - [${req.method}], URL - [${req.url}], IP - [${req.socket.remoteAddress}]`
-        );
-
-        res.on('finish', () => {
-          logging.info(
-            this.name,
-            `METHOD - [${req.method}], URL - [${req.url}], IP - [${req.socket.remoteAddress}], STATUS - [${res.statusCode}]`
-          );
-        });
-
-        next();
       }
     );
   }

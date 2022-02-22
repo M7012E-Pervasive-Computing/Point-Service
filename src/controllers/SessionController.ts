@@ -15,5 +15,7 @@ export default class SessionController extends Controller {
     return SessionController.instance;
   }
 
-  public getSessions(req: express.Request, res: express.Response) {}
+  public getSessions(req: express.Request, res: express.Response) {
+    
+  }
 }

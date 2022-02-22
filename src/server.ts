@@ -23,7 +23,6 @@ class Sever {
     this.app = express();
     this.router = express.Router();
     this.setupBodyParser();
-    this.setupRouteLogging();
     this.setApiRules();
     this.setupRoutes();
     // this.setupMongooseConnection();
@@ -33,26 +32,6 @@ class Sever {
   private setupBodyParser(): void {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
-  }
-
-  private setupRouteLogging(): void {
-    this.app.use(
-      (req: express.Request, res: express.Response, next: NextFunction) => {
-        logging.info(
-          this.name,
-          `METHOD - [${req.method}], URL - [${req.url}], IP - [${req.socket.remoteAddress}]`
-        );
-
-        res.on('finish', () => {
-          logging.info(
-            this.name,
-            `METHOD - [${req.method}], URL - [${req.url}], IP - [${req.socket.remoteAddress}], STATUS - [${res.statusCode}]`
-          );
-        });
-
-        next();
-      }
-    );
   }
 
   private setApiRules(): void {
@@ -81,6 +60,8 @@ class Sever {
   }
 
   private setupRoutes(): void {
+    this.setupRouteLogging();
+
     // Setup the routes
     new PointRoutes(this.router, new PointController('POINT'));
     new SessionRoutes(this.router, new SessionController('SESSION'));
@@ -97,6 +78,26 @@ class Sever {
         return res.status(404).json({
           message: error.message
         });
+      }
+    );
+  }
+
+  private setupRouteLogging(): void {
+    this.app.use(
+      (req: express.Request, res: express.Response, next: NextFunction) => {
+        logging.info(
+          this.name,
+          `METHOD - [${req.method}], URL - [${req.url}], IP - [${req.socket.remoteAddress}]`
+        );
+
+        res.on('finish', () => {
+          logging.info(
+            this.name,
+            `METHOD - [${req.method}], URL - [${req.url}], IP - [${req.socket.remoteAddress}], STATUS - [${res.statusCode}]`
+          );
+        });
+
+        next();
       }
     );
   }
@@ -128,4 +129,4 @@ class Sever {
   }
 }
 
-const server = new Sever('SERVER');
+new Sever('SERVER');

@@ -30,4 +30,21 @@ export default class DatabaseController extends Controller {
     }
     return DatabaseController.instance;
   }
+
+  public close(): void {
+    mongoose.connection
+      .close()
+      .then(() => {
+        logging.info(
+          this.getName(),
+          `Closed connection on ${config.database.hostname}:${config.database.port}`
+        );
+      })
+      .catch((error) => {
+        logging.error(
+          this.getName(),
+          `Failed to close connection on ${config.database.hostname}:${config.database.port} caused by ${error}`
+        );
+      });
+  }
 }

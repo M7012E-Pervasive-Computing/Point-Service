@@ -18,10 +18,10 @@ export default class PointController extends Controller {
   }
 
   public addPoints(req: express.Request, res: express.Response) {
-    const {session, points} = req.body
-    
-    logging.info(this.getName(), "add points for session");
-    
+    const { session, points } = req.body;
+
+    logging.info(this.getName(), 'add points for session');
+
     // return Session.findOneAndUpdate(
     //   {id : id},
     //   { points },
@@ -37,8 +37,7 @@ export default class PointController extends Controller {
   }
 
   public getSession(req: express.Request, res: express.Response) {
-
-    logging.info(this.getName(), "getting session by Id");
+    logging.info(this.getName(), 'getting session by Id');
     return res.status(200).json({
       message: 'SUCCESS'
     });

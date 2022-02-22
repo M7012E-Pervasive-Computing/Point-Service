@@ -9,17 +9,18 @@ import PointController from './controllers/PointController';
 import SessionRoutes from './routes/SessionRoutes';
 import SessionController from './controllers/SessionController';
 
-import RouteNotFound from './errors/RouteNotFound';
+import RouteNotFoundError from './errors/RouteNotFoundError';
 import DatabaseController from './controllers/DatabaseController';
 
-class Sever {
+class Server {
+  private static instance: Server;
   private name: string;
   private app: express.Application;
   private router: express.Router;
   private server: http.Server;
   private database: DatabaseController;
 
-  constructor(name: string) {
+  private constructor(name: string) {
     this.name = name;
     this.app = express();
     this.router = express.Router();
@@ -28,6 +29,13 @@ class Sever {
     this.setApiRules();
     this.setupRoutes();
     this.setupServer();
+  }
+
+  public static getInstance(): Server {
+    if (!Server.instance) {
+      Server.instance = new Server(`SERVER`);
+    }
+    return Server.instance;
   }
 
   private setupBodyParser(): void {
@@ -75,7 +83,7 @@ class Sever {
         res: express.Response,
         next: express.NextFunction
       ) => {
-        const error = new RouteNotFound();
+        const error = new RouteNotFoundError();
         return res.status(404).json({
           message: error.message
         });
@@ -112,6 +120,26 @@ class Sever {
       )
     );
   }
+
+  public shutdown(): void {
+    this.server.close();
+    logging.info(
+      this.name,
+      `Shutdown Server on ${config.server.hostname}:${config.server.port}`
+    );
+  }
 }
 
-new Sever('SERVER');
+const server = Server.getInstance();
+
+process.on('SIGTERM', () => {
+  console.info('SIGTERM signal received.');
+  server.shutdown();
+  // DatabaseController.getInstance().close();
+});
+
+process.on('SIGINT', () => {
+  console.info('SIGINT signal received.');
+  server.shutdown();
+  // DatabaseController.getInstance().close();
+});

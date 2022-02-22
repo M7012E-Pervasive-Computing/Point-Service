@@ -10,8 +10,12 @@ export default abstract class Routes {
     this.router = router;
     this.controller = controller;
     this.configureRoutes();
-    logging.info(controller.getName(), 'Creating route');
+    logging.info(this.getName(), 'Setup route');
   }
 
   public abstract configureRoutes(): void;
+
+  public getName(): string {
+    return this.controller.getName();
+  }
 }

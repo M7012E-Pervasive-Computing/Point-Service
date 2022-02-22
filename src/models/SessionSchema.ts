@@ -1,12 +1,15 @@
-import { Schema } from 'mongoose';
-import { PointSchema } from '../models/PointSchema'
+import mongoose from 'mongoose';
+import PointSchema from '../models/PointSchema';
+import SessionInterface from '../interfaces/SessionInterface';
 
-export const SessionSchema: Schema = new Schema(
+const SessionSchema = new mongoose.Schema<SessionInterface>(
     {
-        session: { type: Schema.Types.String, required: true, unique: true},
+        session: { type: mongoose.Schema.Types.String, required: true, unique: true},
         points: { type: [PointSchema]}
     },
     {
         timestamps : true
     }
 );
+
+export default mongoose.model<SessionInterface>('Session', SessionSchema); 

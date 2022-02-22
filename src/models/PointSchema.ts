@@ -1,13 +1,15 @@
-import { Schema } from 'mongoose';
+import mongoose from 'mongoose';
 import PointInterface from '../interfaces/PointInterface';
 
-export const PointSchema = new Schema<PointInterface>(
+const PointSchema = new mongoose.Schema<PointInterface>(
     {
-        x: {type: Schema.Types.Number, required: true},
-        y: {type: Schema.Types.Number, required: true},
-        z: {type: Schema.Types.Number, required: true},
+        x: {type: mongoose.Schema.Types.Number, required: true},
+        y: {type: mongoose.Schema.Types.Number, required: true},
+        z: {type: mongoose.Schema.Types.Number, required: true},
     },
     {
         timestamps: true
     }
 );
+
+export default mongoose.model<PointInterface>('Point', PointSchema);

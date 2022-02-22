@@ -1,6 +1,5 @@
 import config from './config/config';
 import logging from './config/logging';
-import mongoose from 'mongoose';
 import express, { NextFunction } from 'express';
 import bodyParser from 'body-parser';
 import http from 'http';
@@ -11,21 +10,23 @@ import SessionRoutes from './routes/SessionRoutes';
 import SessionController from './controllers/SessionController';
 
 import RouteNotFound from './errors/RouteNotFound';
+import DatabaseController from './controllers/DatabaseController';
 
 class Sever {
   private name: string;
   private app: express.Application;
   private router: express.Router;
   private server: http.Server;
+  private database: DatabaseController;
 
   constructor(name: string) {
     this.name = name;
     this.app = express();
     this.router = express.Router();
+    //this.database = DatabaseController.getInstance();
     this.setupBodyParser();
     this.setApiRules();
     this.setupRoutes();
-    // this.setupMongooseConnection();
     this.setupServer();
   }
 
@@ -63,8 +64,8 @@ class Sever {
     this.setupRouteLogging();
 
     // Setup the routes
-    new PointRoutes(this.router, new PointController('POINT'));
-    new SessionRoutes(this.router, new SessionController('SESSION'));
+    new PointRoutes(this.router, PointController.getInstance());
+    new SessionRoutes(this.router, SessionController.getInstance());
     this.app.use('/', this.router);
 
     // Route Not Found
@@ -100,22 +101,6 @@ class Sever {
         next();
       }
     );
-  }
-
-  private setupMongooseConnection(): void {
-    mongoose
-      .connect(
-        `mongodb://${config.database.hostname}:${config.database.port}/${config.database.hostname}`
-      )
-      .then((_) => {
-        logging.info(
-          this.name,
-          `Connected to ${config.database.hostname}:${config.database.port}!`
-        );
-      })
-      .catch((error) => {
-        logging.error(this.name, error.message);
-      });
   }
 
   private setupServer(): void {

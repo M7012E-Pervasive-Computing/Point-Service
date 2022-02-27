@@ -12,7 +12,9 @@ const server = {
 const database = {
   hostname: process.env.DATABASE_HOSTNAME || '130.240.202.87',
   port: process.env.DATABASE_PORT || 27017,
-  name: process.env.DATABASE_NAME || 'Data'
+  name: process.env.DATABASE_NAME || 'Data',
+  user: process.env.DATABASE_USERNAME || 'root',
+  pass: process.env.DATABASE_PASSWORD || 'JA1S1asD5aI6Q12YG5s89d7af5sBcaL4A78lhasJKsG4Hd5haA7S'
 };
 
 // Config for constants

@@ -11,12 +11,21 @@ export default class DatabaseController extends Controller {
     super('DATABASE');
     mongoose
       .connect(
-        `mongodb://${config.database.hostname}:${config.database.port}/${config.database.name}`
-      )
+        `mongodb://${config.database.hostname}:${config.database.port}/${config.database.name}`,
+        {
+          useUnifiedTopology: true,
+          useNewUrlParser: true,
+          // auth: {
+          //   authSource: 'admin',
+          // },
+          authSource: 'admin',
+          user: config.database.user.toString(),
+          pass: config.database.pass.toString(),
+        })
       .then((_) => {
         logging.info(
           this.getName(),
-          `Connected to ${config.database.hostname}:${config.database.port}!`
+          `Connected to ${config.database.hostname}:${config.database.port}`
         );
       })
       .catch((error) => {

@@ -1,9 +1,7 @@
 import express from 'express';
-import mongoose from 'mongoose';
 import logging from '../config/logging';
 import Controller from './controller';
-import { SessionSchema } from '../models/SessionSchema';
-import ISession from '../interfaces/SessionInterface';
+import Session from '../models/SessionSchema';
 
 export default class SessionController extends Controller {
   private static instance: SessionController;
@@ -20,11 +18,13 @@ export default class SessionController extends Controller {
   }
 
   public getSessions(req: express.Request, res: express.Response) {
-    logging.info(this.getName(), "Searching for all sessions");
-    let Session = mongoose.model<ISession>('Session', SessionSchema);
-    return Session.find({})
-      .select("name")
+    logging.info(this.getName(), "Find all sessions");
+    return Session.find()
+      .select('session')
+      .exec()
       .then((result) => {
+        logging.info(this.getName(), "Successfully found sessions");
+        logging.info(this.getName(), `${result}`);
 
       })
       .catch((error) => {

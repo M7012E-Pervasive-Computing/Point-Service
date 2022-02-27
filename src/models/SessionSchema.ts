@@ -1,15 +1,14 @@
 import mongoose from 'mongoose';
-import PointSchema from '../models/PointSchema';
+import { PointSchema } from './PointSchema';
 import SessionInterface from '../interfaces/SessionInterface';
 
-const SessionSchema = new mongoose.Schema<SessionInterface>(
+export const SessionSchema = new mongoose.Schema(
     {
-        session: { type: mongoose.Schema.Types.String, required: true, unique: true},
-        points: { type: [PointSchema]}
-    },
-    {
-        timestamps : true
+        sessionName: { type: String, required: true, unique: true},
+        points: { type: [PointSchema], required: true, default: []}
     }
 );
+
+SessionSchema.post<SessionInterface>('save', function () {});
 
 export default mongoose.model<SessionInterface>('Session', SessionSchema); 

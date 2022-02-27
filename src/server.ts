@@ -27,7 +27,7 @@ class Server {
     this.name = name;
     this.app = express();
     this.router = express.Router();
-    //this.database = DatabaseController.getInstance();
+    this.database = DatabaseController.getInstance();
     this.setupBodyParser();
     this.setApiRules();
     this.setupRoutes();
@@ -118,12 +118,12 @@ const server = Server.getInstance();
 
 process.on('SIGTERM', () => {
   console.info('SIGTERM signal received.');
+  DatabaseController.getInstance().close();
   server.shutdown();
-  // DatabaseController.getInstance().close();
 });
 
 process.on('SIGINT', () => {
   console.info('SIGINT signal received.');
+  DatabaseController.getInstance().close();
   server.shutdown();
-  // DatabaseController.getInstance().close();
 });

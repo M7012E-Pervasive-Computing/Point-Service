@@ -1,7 +1,6 @@
-import Point from './PointInterface'
+import { Schema } from "mongoose";
 
 export default interface Session extends Document {
-    session : string;
-    points: Point[];
-    sessionId: string;
+    sessionName : String;
+    points: Schema[];
 }

@@ -71,9 +71,35 @@ export default class PointController extends Controller {
   }
 
   public getSessionPoints(req: express.Request, res: express.Response) {
-    logging.info(this.getName(), 'getting session by Id');
-    return res.status(200).json({
-      message: 'SUCCESS'
+    logging.info(this.getName(), 'Getting session by Id');
+    
+    const sessionName: String = req.params.name != null ? req.params.name.toString() : '';
+
+    return Session.exists({ sessionName: sessionName })
+      .then((exist) => {
+        if (exist) {
+          logging.info(this.getName(), `Attempt to fetch points from session ${sessionName}`);
+          return Session.findOne({sessionName: sessionName})
+            .select("points")
+            .then((result)=> {
+              logging.info(this.getName(), `Successfully fetched points from session ${sessionName}`);
+              return res.status(200).json({
+                message: `Successfully added points to session ${sessionName}`,
+                points: result
+              });
+            })
+            .catch((error) => {
+              logging.error(this.getName(), `Could not get points from session ${sessionName}, error: ${error.message}`);
+              return res.status(500).json({
+                message: `Could not get points from session ${sessionName}, error: ${error.message}`
+              });
+            });             
+        } else{
+          logging.info(this.getName(), `Could not find session ${sessionName}`);
+          return res.status(400).json({
+            message: `Could not find session ${sessionName}`
+          })
+        }
     });
 
     //find by session id

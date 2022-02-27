@@ -11,7 +11,7 @@ export default class DatabaseController extends Controller {
     super('DATABASE');
     mongoose
       .connect(
-        `mongodb://${config.database.hostname}:${config.database.port}/${config.database.hostname}`
+        `mongodb://${config.database.hostname}:${config.database.port}/${config.database.name}`
       )
       .then((_) => {
         logging.info(

@@ -10,8 +10,9 @@ const server = {
 
 // Databases constants
 const database = {
-  hostname: process.env.DATABASE_HOSTNAME || 'localhost',
-  port: process.env.DATABASE_PORT || 27018
+  hostname: process.env.DATABASE_HOSTNAME || '130.240.202.87',
+  port: process.env.DATABASE_PORT || 27017,
+  name: process.env.DATABASE_NAME || 'Data'
 };
 
 // Config for constants

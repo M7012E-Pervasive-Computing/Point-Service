@@ -1,17 +1,10 @@
 # Point-Service
 
-A Python program used for the visualization of a certain point cloud, both using PyVista and Open3d libraries.
+A TypeScript service used to store the mapped points of a drone in a database while flying it and then being able to manage them after that.
 
 ## Description
 
-This Python program has been created to receive 3-dimensional coordinates coming from a server, build up the respective point cloud and then visualize it both with the PyVista and Open3d library. Apart from that, there is an optimization tool based on point cloud density used to improve the result of the graphical model.
-
-## Getting Started
-
-### Executing program
-
-Run file using pipenv
-> pipenv run python app.py
+This service was created in order to have a more flexible way of storing the 3D coordinates obtained from the drone and to be able to process them after the mapping process has finished. It has the functionality of adding points, which will always be associated to a certain mapping session, and be stored in a MongoDB database. This way, the service offers the functionality of updating an old session with new points. The session route will be needed to get access to a specific session. The service uses most notably Express which is a NodeJS web application framework and Mongoose which is an object data modelling library for MongoDB.
 
 ## Authors
 

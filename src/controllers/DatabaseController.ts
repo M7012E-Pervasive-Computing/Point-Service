@@ -4,9 +4,15 @@ import config from '../config/config';
 import logging from '../config/logging';
 import Controller from './Controller';
 
+/**
+ * Singleton class for database controller
+ */
 export default class DatabaseController extends Controller {
   private static instance: DatabaseController;
 
+  /**
+   * Establish connection
+   */
   private constructor() {
     super('DATABASE');
     mongoose
@@ -20,8 +26,9 @@ export default class DatabaseController extends Controller {
           // },
           authSource: 'admin',
           user: config.database.user.toString(),
-          pass: config.database.pass.toString(),
-        })
+          pass: config.database.pass.toString()
+        }
+      )
       .then((_) => {
         logging.info(
           this.getName(),
@@ -33,6 +40,10 @@ export default class DatabaseController extends Controller {
       });
   }
 
+  /**
+   * Get singleton instance of controller
+   * @returns instance of database controller
+   */
   public static getInstance(): DatabaseController {
     if (!DatabaseController.instance) {
       DatabaseController.instance = new DatabaseController();
@@ -40,6 +51,9 @@ export default class DatabaseController extends Controller {
     return DatabaseController.instance;
   }
 
+  /**
+   * Closes database connection
+   */
   public close(): void {
     mongoose.connection
       .close()

@@ -15,6 +15,9 @@ import DatabaseController from './controllers/DatabaseController';
 
 import Route from './middlewares/Route';
 
+/**
+ * Singleton server
+ */
 class Server {
   private static instance: Server;
   private name: string;
@@ -34,6 +37,9 @@ class Server {
     this.setupServer();
   }
 
+  /**
+   * @returns Server instance
+   */
   public static getInstance(): Server {
     if (!Server.instance) {
       Server.instance = new Server(`SERVER`);
@@ -41,11 +47,17 @@ class Server {
     return Server.instance;
   }
 
+  /**
+   * Setup Body parser
+   */
   private setupBodyParser(): void {
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
   }
 
+  /**
+   * Set API rules
+   */
   private setApiRules(): void {
     this.app.use(
       (
@@ -71,9 +83,18 @@ class Server {
     );
   }
 
+  /**
+   * Setup the routes
+   */
   private setupRoutes(): void {
     // this.setupRouteLogging();
-    this.app.use((req: express.Request, res: express.Response, next: express.NextFunction) => Route.getInstance().logging(req, res, next));
+    this.app.use(
+      (
+        req: express.Request,
+        res: express.Response,
+        next: express.NextFunction
+      ) => Route.getInstance().logging(req, res, next)
+    );
 
     // Setup the routes
     new PointRoutes(this.router, PointController.getInstance());
@@ -95,6 +116,9 @@ class Server {
     );
   }
 
+  /**
+   * Setup http server
+   */
   private setupServer(): void {
     this.server = http.createServer(this.app);
     this.server.listen(config.server.port, () =>
@@ -105,6 +129,9 @@ class Server {
     );
   }
 
+  /**
+   * Called on shutdown
+   */
   public shutdown(): void {
     this.server.close();
     logging.info(

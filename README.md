@@ -10,7 +10,7 @@ This service was created in order to have a more flexible way of storing the 3D 
 Build: 
 > npm run build
 
-start: 
+Start: 
 > npm run start
 
 ## Authors

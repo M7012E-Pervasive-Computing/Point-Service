@@ -1,6 +1,6 @@
 # Point-Service
 
-A TypeScript service used to store in a database the points mapped by a drone while flying and the later management functionalities.
+A TypeScript service used to store in a database the points mapped by a drone while flying, and the later management functionalities.
 
 ## Description
 

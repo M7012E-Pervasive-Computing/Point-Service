@@ -13,7 +13,7 @@ Build:
 Start: 
 > npm run start
 
-Execution settings can be changed in src/config/config.ts where variables can also be changed if launched by docker-compose. 
+Execution settings can be changed in src/config/config.ts, where variables can also be changed if launched by docker-compose, using dotenv.
 
 ## Authors
 

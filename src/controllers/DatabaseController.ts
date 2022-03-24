@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 
 import config from '../config/config';
 import logging from '../config/logging';
-import Controller from './controller';
+import Controller from './Controller';
 
 export default class DatabaseController extends Controller {
   private static instance: DatabaseController;

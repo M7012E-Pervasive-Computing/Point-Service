@@ -1,6 +1,6 @@
 import express from 'express';
 import logging from '../config/logging';
-import Controller from '../controllers/controller';
+import Controller from '../controllers/Controller';
 
 export default abstract class Routes {
   protected router: express.Router;

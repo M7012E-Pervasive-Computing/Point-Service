@@ -1,7 +1,7 @@
 import express from 'express';
 import Session from '../models/SessionSchema';;
 import logging from '../config/logging';
-import Controller from './controller';
+import Controller from './Controller';
 
 export default class PointController extends Controller {
   private static instance: PointController;

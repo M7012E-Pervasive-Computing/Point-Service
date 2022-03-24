@@ -1,6 +1,6 @@
 import express from 'express';
 import logging from '../config/logging';
-import Controller from './controller';
+import Controller from './Controller';
 import Session from '../models/SessionSchema';
 
 export default class SessionController extends Controller {

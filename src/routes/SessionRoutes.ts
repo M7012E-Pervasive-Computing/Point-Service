@@ -1,4 +1,4 @@
-import Controller from '../controllers/controller';
+import Controller from '../controllers/Controller';
 import Routes from './Routes';
 import express from 'express';
 import SessionController from '../controllers/SessionController';

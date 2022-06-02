@@ -28,8 +28,7 @@ export default class PointController extends Controller {
    * @returns status
    */
   public addPoints(req: express.Request, res: express.Response) {
-    const sessionName = req.body.name;
-    const points = req.body.data;
+    const {sessionName, points} = req.body
     return Session.exists({ sessionName })
       .then((exist: any) => {
         if (exist) {
@@ -38,7 +37,7 @@ export default class PointController extends Controller {
             `Attempt to add points for session ${sessionName}`
           );
           return Session.updateOne(
-            { sessionName },
+            { sessionName: sessionName },
             { $push: { points: { $each: points } } }
           )
             .exec()
@@ -66,8 +65,8 @@ export default class PointController extends Controller {
             `Could not find session ${sessionName}, attempt to create a new session`
           );
           const session = new Session({
-            sessionName,
-            points,
+            sessionName: sessionName,
+            points: points,
           });
 
           session
@@ -75,10 +74,10 @@ export default class PointController extends Controller {
             .then((_) => {
               logging.info(
                 this.getName(),
-                `Successfully created new session ${name}`
+                `Successfully created new session ${sessionName}`
               );
               return res.status(201).json({
-                message: `Successfully created a new session ${name}`
+                message: `Successfully created a new session ${sessionName}`
               });
             })
             .catch((error: Error) => {
@@ -95,10 +94,10 @@ export default class PointController extends Controller {
       .catch((error: Error) => {
         logging.error(
           this.getName(),
-          `Cannot check if session ${name} exists, error: ${error.message}`
+          `Cannot check if session ${sessionName} exists, error: ${error.message}`
         );
         return res.status(500).json({
-          message: `Cannot check if session ${name} exists, error: ${error.message}`
+          message: `Cannot check if session ${sessionName} exists, error: ${error.message}`
         });
       });
   }

@@ -97,8 +97,8 @@ class Server {
     );
 
     // Setup the routes
-    new PointRoutes(this.router, PointController.getInstance());
     new SessionRoutes(this.router, SessionController.getInstance());
+    new PointRoutes(this.router, PointController.getInstance());
     this.app.use('/', this.router);
 
     // Route Not Found

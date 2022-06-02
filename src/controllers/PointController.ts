@@ -29,7 +29,7 @@ export default class PointController extends Controller {
    */
   public addPoints(req: express.Request, res: express.Response) {
     const {name, data} = req.body
-    return Session.exists({ name })
+    return Session.exists({ sessionName: name })
       .then((exist: any) => {
         if (exist) {
           logging.info(

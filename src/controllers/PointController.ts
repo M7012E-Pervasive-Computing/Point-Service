@@ -38,7 +38,7 @@ export default class PointController extends Controller {
             `Attempt to add points for session ${sessionName}`
           );
           return Session.updateOne(
-            { sessionName: name },
+            { sessionName },
             { $push: { points: { $each: points } } }
           )
             .exec()

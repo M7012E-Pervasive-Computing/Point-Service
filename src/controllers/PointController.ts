@@ -28,35 +28,36 @@ export default class PointController extends Controller {
    * @returns status
    */
   public addPoints(req: express.Request, res: express.Response) {
-    const { sessionName: name, points: data } = req.body;
-    return Session.exists({ sessionName: name })
-      .then((exist) => {
+    const sessionName = req.body.name;
+    const points = req.body.data;
+    return Session.exists({ sessionName })
+      .then((exist: any) => {
         if (exist) {
           logging.info(
             this.getName(),
-            `Attempt to add points for session ${name}`
+            `Attempt to add points for session ${sessionName}`
           );
           return Session.updateOne(
             { sessionName: name },
-            { $push: { points: { $each: data } } }
+            { $push: { points: { $each: points } } }
           )
             .exec()
-            .then((_) => {
+            .then((_: any) => {
               logging.info(
                 this.getName(),
-                `Successfully added points to session ${name}`
+                `Successfully added points to session ${sessionName}`
               );
               return res.status(200).json({
-                message: `Successfully added points to session ${name}`
+                message: `Successfully added points to session ${sessionName}`
               });
             })
-            .catch((error) => {
+            .catch((error: Error) => {
               logging.error(
                 this.getName(),
-                `Could not update session ${name} with new points, error: ${error.message}`
+                `Could not update session ${sessionName} with new points, error: ${error.message}`
               );
               return res.status(500).json({
-                message: `Could not add new points to session ${name}, error: ${error.message}`
+                message: `Could not add new points to session ${sessionName}, error: ${error.message}`
               });
             });
         } else {
@@ -65,8 +66,8 @@ export default class PointController extends Controller {
             `Could not find session ${name}, attempt to create a new session`
           );
           const session = new Session({
-            sessionName: name,
-            points: data
+            sessionName,
+            points,
           });
 
           session
@@ -80,7 +81,7 @@ export default class PointController extends Controller {
                 message: `Successfully created a new session ${name}`
               });
             })
-            .catch((error) => {
+            .catch((error: Error) => {
               logging.error(
                 this.getName(),
                 `Could not create a new session, given error ${error.message}`
@@ -91,7 +92,7 @@ export default class PointController extends Controller {
             });
         }
       })
-      .catch((error) => {
+      .catch((error: Error) => {
         logging.error(
           this.getName(),
           `Cannot check if session ${name} exists, error: ${error.message}`

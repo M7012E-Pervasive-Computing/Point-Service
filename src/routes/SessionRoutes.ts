@@ -15,7 +15,7 @@ export default class PointRoutes extends Routes {
    * Setup Session Routes
    */
   public configureRoutes(): void {
-    this.router.get('/get/sessions', (req, res, next) =>
+    this.router.get('/namees', (req, res, next) =>
       (this.controller as SessionController).getSessions(req, res)
     );
   }

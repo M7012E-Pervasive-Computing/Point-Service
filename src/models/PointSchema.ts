@@ -8,7 +8,7 @@ export const PointSchema = new mongoose.Schema(
     z: { type: Number, required: true }
   },
   {
-    timestamps: true
+    timestamps: false
   }
 );
 

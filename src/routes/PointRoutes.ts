@@ -15,10 +15,10 @@ export default class PointRoutes extends Routes {
    * Setup routes for points
    */
   public configureRoutes(): void {
-    this.router.post('/add/points', (req, res, next) =>
+    this.router.post('/', (req, res, next) =>
       (this.controller as PointController).addPoints(req, res)
     );
-    this.router.get('/get/session/:name', (req, res, next) =>
+    this.router.get('/:name', (req, res, next) =>
       (this.controller as PointController).getSessionPoints(req, res)
     );
   }

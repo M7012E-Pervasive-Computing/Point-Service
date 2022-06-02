@@ -63,7 +63,7 @@ export default class PointController extends Controller {
         } else {
           logging.info(
             this.getName(),
-            `Could not find session ${name}, attempt to create a new session`
+            `Could not find session ${sessionName}, attempt to create a new session`
           );
           const session = new Session({
             sessionName,
